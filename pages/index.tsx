@@ -6,14 +6,23 @@ export default function Home() {
 
   const handleClick = async () => {
     console.log('Starting iterable call');
-    setOutput('Starting (error: `undefined` around # on vercel)...\n');
+    setOutput('Starting (error: `undefined` around #299 on vercel)...\n');
     try {
       const iterable = await trpc.examples.iterable.mutate();
       for await (const num of iterable) {
         setOutput((prev) => prev + num + ' ');
       }
       console.log('Completed iterable');
-    } catch (error: any) {
+    }
+    catch (error: any) {
+
+      /**
+       * `error: any` <- this is what we're investigating
+       * an error=undefined is observed on vercel edge deployment after 5 minutes
+       * because the `jsonl.ts > createStreamsManager > streamController.error is invoked (on client)
+       * with an 'undefined' parameter.
+       */
+
       console.warn('Caught error:', { errorType: typeof error, error });
       setOutput((prev) => prev + '\n\nError (check console): ' + (error instanceof Error ? error.message : String(error)));
     } finally {

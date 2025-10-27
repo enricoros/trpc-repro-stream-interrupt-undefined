@@ -6,7 +6,7 @@ export default function Home() {
 
   const handleClick = async () => {
     console.log('Starting iterable call');
-    setOutput('Starting...\n');
+    setOutput('Starting (error: `undefined` around # on vercel)...\n');
     try {
       const iterable = await trpc.examples.iterable.mutate();
       for await (const num of iterable) {
@@ -15,9 +15,9 @@ export default function Home() {
       console.log('Completed iterable');
     } catch (error: any) {
       console.warn('Caught error:', { errorType: typeof error, error });
-      setOutput((prev) => prev + '\nError (check console): ' + (error instanceof Error ? error.message : String(error)));
+      setOutput((prev) => prev + '\n\nError (check console): ' + (error instanceof Error ? error.message : String(error)));
     } finally {
-      setOutput((prev) => prev + '\nDone.');
+      setOutput((prev) => prev + '\n\nDone.');
     }
   };
 
@@ -25,7 +25,7 @@ export default function Home() {
     <div style={{ padding: '20px' }}>
       <button onClick={handleClick}>Start</button>
       <h1>Output:</h1>
-      <pre>{output}</pre>
+      <div style={{ fontFamily: 'sans-serif', fontStyle: '16px', whiteSpace: 'pre-wrap' }}>{output}</div>
       <div>
         <br/>
         Errors observed:

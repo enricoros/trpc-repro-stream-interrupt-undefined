@@ -1,5 +1,5 @@
 import { initTRPC } from '@trpc/server';
-import { transformer } from '../shared/transformer.js';
+import { transformer } from '@/src/shared/transformer';
 
 /**
  * Initialization of tRPC backend
